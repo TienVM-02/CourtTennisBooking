@@ -33,6 +33,7 @@ namespace CourtTennisBookingv2BE
   
             services.AddMvc();
             var ConnectionString = Configuration.GetConnectionString("MbkDbConstr");
+            
             services.AddDbContext<TennisBooking_v1Context>(options => options.UseSqlServer(ConnectionString));
 
 
@@ -41,8 +42,8 @@ namespace CourtTennisBookingv2BE
                   c.SwaggerDoc("v1", new OpenApiInfo
                   {
                       Version = "v1",
-                      Title = "Travel Together API",
-                      Description = "Travel Together Core Web API ",
+                      Title = "Court Tennis Booking ",
+                      Description = "Court Tennis Booking Core Web API ",
                       TermsOfService = new Uri("https://example.com/terms"),
                       Contact = new OpenApiContact
                       {
@@ -71,7 +72,9 @@ namespace CourtTennisBookingv2BE
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            if (env.IsDevelopment())
+
+            app.UseCors(options => options.WithOrigins("http://localhost:3000", "http://http://traveltogetherr.somee.com", "http://localhost:3001").AllowAnyHeader().AllowAnyMethod().AllowCredentials());
+            if (env.IsDevelopment() || env.IsProduction()) //env isproduction la ban public, dev la chay local
             {
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();

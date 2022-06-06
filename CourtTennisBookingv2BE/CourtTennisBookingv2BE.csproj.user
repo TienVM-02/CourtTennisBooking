@@ -10,6 +10,6 @@
     <WebStackScaffolding_LayoutPageFile />
     <WebStackScaffolding_DbContextTypeFullName>CourtTennisBookingv2BE.Models.TennisBooking_v1Context</WebStackScaffolding_DbContextTypeFullName>
     <WebStackScaffolding_IsAsyncSelected>False</WebStackScaffolding_IsAsyncSelected>
-    <NameOfLastUsedPublishProfile>D:\SWD391 BinhNN\CourtTennisBooking\CourtTennisBookingv2BE\Properties\PublishProfiles\FTPProfile.pubxml</NameOfLastUsedPublishProfile>
+    <NameOfLastUsedPublishProfile>D:\SWD391 BinhNN\CourtTennisBooking\CourtTennisBookingv2BE\Properties\PublishProfiles\FTPProfile1.pubxml</NameOfLastUsedPublishProfile>
   </PropertyGroup>
 </Project>
