@@ -12,13 +12,13 @@ using CourtTennisBookingV3.General;
 
 namespace CourtTennisBookingV3.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/v1.0/[controller]")]
     [ApiController]
     public class RolesController : ControllerBase
     {
-        private readonly TennisBooking_v2Context _context;
+        private readonly TennisBooking_v1Context _context;
         private readonly IRoleRepository _roleRepository;
-        public RolesController(TennisBooking_v2Context context, IRoleRepository roleRepository)
+        public RolesController(TennisBooking_v1Context context, IRoleRepository roleRepository)
         {
             _context = context;
             _roleRepository = roleRepository;

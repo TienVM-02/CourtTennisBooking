@@ -1,3 +1,4 @@
+﻿using CourtTennisBookingV3.Helpers;
 using CourtTennisBookingV3.Models;
 using CourtTennisBookingV3.Service;
 using Microsoft.AspNetCore.Builder;
@@ -15,7 +16,12 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using CorePush.Apple;
+using CorePush.Google;
 
 namespace CourtTennisBookingV3
 {
@@ -33,10 +39,11 @@ namespace CourtTennisBookingV3
         {
             services.AddControllers();
 
+
             services.AddMvc();
             var ConnectionString = Configuration.GetConnectionString("MbkDbConstr");
 
-            services.AddDbContext<TennisBooking_v2Context>(options => options.UseSqlServer(ConnectionString));
+            services.AddDbContext<TennisBooking_v1Context>(options => options.UseSqlServer(ConnectionString));
 
 
             services.AddSwaggerGen(c =>
@@ -95,7 +102,8 @@ namespace CourtTennisBookingV3
                 c.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
 
                 //
-                //services.AddControllers().AddNewtonsoftJson();
+                services.AddSingleton(c);
+
             });
             services.AddTransient<IAccountRespository, AccountRespository>();
             services.AddTransient<IBookingsRespository, BookingsRespository>();
@@ -108,7 +116,46 @@ namespace CourtTennisBookingV3
             //Enable cors
             services.AddCors();
 
-          
+            // jwt
+            services.Configure<AppSettings>(Configuration.GetSection("AppSettings"));
+
+            var secretKey = Configuration["AppSettings:Secret"];
+            var secretKeybytes = Encoding.UTF8.GetBytes(secretKey);
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+              .AddJwtBearer(options =>
+              {
+                  options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
+                  {
+                      //Tự cấp token
+                      ValidateIssuer = false,
+                      ValidateAudience = false,
+                      //Kí vào token
+                      ValidateIssuerSigningKey = true,
+                      IssuerSigningKey = new SymmetricSecurityKey(secretKeybytes),
+
+                      ClockSkew = TimeSpan.Zero
+
+                  };
+              });
+
+            //noti
+            //services.AddTransient<INotificationService, NotificationService>();
+            //services.AddHttpClient<FcmSender>();
+            //services.AddHttpClient<ApnSender>();
+            //var appSettingsSection = Configuration.GetSection("FcmNotification");
+            //services.Configure<FcmNotificationSetting>(appSettingsSection);
+
+            // Register the swagger generator
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc(name: "V1", new OpenApiInfo { Title = "My API", Version = "V1" });
+            });
+
+            //Mail server- smtp
+
+
+
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

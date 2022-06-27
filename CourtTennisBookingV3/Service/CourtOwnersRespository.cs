@@ -6,10 +6,10 @@ namespace CourtTennisBookingV3.Service
 {
     public class CourtOwnersRespository : ICourtOwnersRespository
     {
-        private readonly TennisBooking_v2Context _context;
+        private readonly TennisBooking_v1Context _context;
         public static int PAGE_SIZE { get; set; } = 5;
 
-        public CourtOwnersRespository(TennisBooking_v2Context context)
+        public CourtOwnersRespository(TennisBooking_v1Context context)
         {
             _context = context;
         }

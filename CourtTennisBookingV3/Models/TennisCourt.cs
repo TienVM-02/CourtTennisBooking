@@ -7,6 +7,11 @@ namespace CourtTennisBookingV3.Models
 {
     public partial class TennisCourt
     {
+        public TennisCourt()
+        {
+            Bookings = new HashSet<Booking>();
+        }
+
         public string Id { get; set; }
         public string Address { get; set; }
         public string Name { get; set; }
@@ -17,6 +22,6 @@ namespace CourtTennisBookingV3.Models
         public string Image { get; set; }
 
         public virtual CourtOwner Owner { get; set; }
-        public virtual Booking Booking { get; set; }
+        public virtual ICollection<Booking> Bookings { get; set; }
     }
 }
