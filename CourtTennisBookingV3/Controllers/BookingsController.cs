@@ -11,15 +11,15 @@ using System.Text.RegularExpressions;
 
 namespace CourtTennisBookingV3.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/v1.0/[controller]")]
     [ApiController]
     public class BookingsController : ControllerBase
     {
-        private readonly TennisBooking_v2Context _context;
+        private readonly TennisBooking_v1Context _context;
         private readonly IBookingsRespository _bookingsRespository;
 
 
-        public BookingsController(TennisBooking_v2Context context, IBookingsRespository bookingsRespository)
+        public BookingsController(TennisBooking_v1Context context, IBookingsRespository bookingsRespository)
         {
             _context = context;
             _bookingsRespository = bookingsRespository;

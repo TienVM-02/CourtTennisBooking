@@ -11,13 +11,13 @@ using System.Text.RegularExpressions;
 
 namespace CourtTennisBookingV3.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/v1.0/[controller]")]
     [ApiController]
     public class TennisCourtsController : ControllerBase
     {
-        private readonly TennisBooking_v2Context _context;
+        private readonly TennisBooking_v1Context _context;
         private readonly ITenisCourtsRespository _tenisCourtsRespository;
-        public TennisCourtsController(TennisBooking_v2Context context, ITenisCourtsRespository tenisCourtsRespository)
+        public TennisCourtsController(TennisBooking_v1Context context, ITenisCourtsRespository tenisCourtsRespository)
         {
             _context = context;
             _tenisCourtsRespository = tenisCourtsRespository;

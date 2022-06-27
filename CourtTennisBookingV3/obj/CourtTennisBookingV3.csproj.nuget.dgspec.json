@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "D:\\SWD391 BinhNN\\CourtTennisBooking\\CourtTennisBookingV3\\CourtTennisBookingV3.csproj": {}
+    "C:\\Users\\ipuil\\OneDrive\\Máy tính\\1\\CourtTennisBookingV3\\CourtTennisBookingV3.csproj": {}
   },
   "projects": {
-    "D:\\SWD391 BinhNN\\CourtTennisBooking\\CourtTennisBookingV3\\CourtTennisBookingV3.csproj": {
+    "C:\\Users\\ipuil\\OneDrive\\Máy tính\\1\\CourtTennisBookingV3\\CourtTennisBookingV3.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\SWD391 BinhNN\\CourtTennisBooking\\CourtTennisBookingV3\\CourtTennisBookingV3.csproj",
+        "projectUniqueName": "C:\\Users\\ipuil\\OneDrive\\Máy tính\\1\\CourtTennisBookingV3\\CourtTennisBookingV3.csproj",
         "projectName": "CourtTennisBookingV3",
-        "projectPath": "D:\\SWD391 BinhNN\\CourtTennisBooking\\CourtTennisBookingV3\\CourtTennisBookingV3.csproj",
-        "packagesPath": "C:\\Users\\vuanh\\.nuget\\packages\\",
-        "outputPath": "D:\\SWD391 BinhNN\\CourtTennisBooking\\CourtTennisBookingV3\\obj\\",
+        "projectPath": "C:\\Users\\ipuil\\OneDrive\\Máy tính\\1\\CourtTennisBookingV3\\CourtTennisBookingV3.csproj",
+        "packagesPath": "C:\\Users\\ipuil\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\ipuil\\OneDrive\\Máy tính\\1\\CourtTennisBookingV3\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\vuanh\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\ipuil\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -40,6 +40,30 @@
         "net5.0": {
           "targetAlias": "net5.0",
           "dependencies": {
+            "CorePush": {
+              "target": "Package",
+              "version": "[3.0.12, )"
+            },
+            "Firebase.Auth": {
+              "target": "Package",
+              "version": "[1.0.0, )"
+            },
+            "FirebaseAuth": {
+              "target": "Package",
+              "version": "[2.0.6, )"
+            },
+            "FirebaseStorage.net": {
+              "target": "Package",
+              "version": "[1.0.3, )"
+            },
+            "MailKit": {
+              "target": "Package",
+              "version": "[3.3.0, )"
+            },
+            "Microsoft.AspNetCore.Authentication.JwtBearer": {
+              "target": "Package",
+              "version": "[5.0.17, )"
+            },
             "Microsoft.EntityFrameworkCore": {
               "target": "Package",
               "version": "[5.0.17, )"
@@ -63,6 +87,14 @@
             "Microsoft.VisualStudio.Web.CodeGeneration.Design": {
               "target": "Package",
               "version": "[5.0.2, )"
+            },
+            "MimeKit": {
+              "target": "Package",
+              "version": "[3.3.0, )"
+            },
+            "Newtonsoft.Json": {
+              "target": "Package",
+              "version": "[13.0.1, )"
             },
             "Swashbuckle.AspNetCore": {
               "target": "Package",

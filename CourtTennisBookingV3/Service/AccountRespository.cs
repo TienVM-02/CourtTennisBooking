@@ -6,9 +6,9 @@ namespace CourtTennisBookingV3.Service
 {
     public class AccountRespository : IAccountRespository
     {
-        private readonly TennisBooking_v2Context _context;
+        private readonly TennisBooking_v1Context _context;
         public static int PAGE_SIZE { get; set; } = 5;
-        public AccountRespository(TennisBooking_v2Context context)
+        public AccountRespository(TennisBooking_v1Context context)
         {
             _context = context;
         }
