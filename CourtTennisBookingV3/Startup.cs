@@ -41,6 +41,7 @@ namespace CourtTennisBookingV3
 
 
             services.AddMvc();
+
             var ConnectionString = Configuration.GetConnectionString("MbkDbConstr");
 
             services.AddDbContext<TennisBooking_v1Context>(options => options.UseSqlServer(ConnectionString));
@@ -104,6 +105,7 @@ namespace CourtTennisBookingV3
                 //
                 services.AddSingleton(c);
 
+
             });
             services.AddTransient<IAccountRespository, AccountRespository>();
             services.AddTransient<IBookingsRespository, BookingsRespository>();
@@ -121,6 +123,8 @@ namespace CourtTennisBookingV3
 
             var secretKey = Configuration["AppSettings:Secret"];
             var secretKeybytes = Encoding.UTF8.GetBytes(secretKey);
+
+
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
               .AddJwtBearer(options =>
               {
@@ -132,28 +136,8 @@ namespace CourtTennisBookingV3
                       //Kí vào token
                       ValidateIssuerSigningKey = true,
                       IssuerSigningKey = new SymmetricSecurityKey(secretKeybytes),
-
-                      ClockSkew = TimeSpan.Zero
-
                   };
               });
-
-            //noti
-            //services.AddTransient<INotificationService, NotificationService>();
-            //services.AddHttpClient<FcmSender>();
-            //services.AddHttpClient<ApnSender>();
-            //var appSettingsSection = Configuration.GetSection("FcmNotification");
-            //services.Configure<FcmNotificationSetting>(appSettingsSection);
-
-            // Register the swagger generator
-            services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc(name: "V1", new OpenApiInfo { Title = "My API", Version = "V1" });
-            });
-
-            //Mail server- smtp
-
-
 
 
         }
@@ -161,15 +145,18 @@ namespace CourtTennisBookingV3
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            app.UseCors(options => options.WithOrigins("http://localhost:3000", "http://http://traveltogetherr.somee.com", "http://localhost:3001").AllowAnyHeader().AllowAnyMethod().AllowCredentials());
+            app.UseCors(options => options.WithOrigins("http://localhost:3000", "http://tenisuu.somee.com", "https://tenisuu.somee.com", "http://localhost:3001").AllowAnyHeader().AllowAnyMethod().AllowCredentials());
             if (env.IsDevelopment() || env.IsProduction())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "CourtTennisBookingV3 v1"));
+         
             }
 
+            app.UseSwagger();
+            app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "CourtTennisBookingV3 v1"));
+
             app.UseHttpsRedirection();
+            app.UseAuthentication();
 
             app.UseRouting();
 

@@ -12,6 +12,7 @@ using CourtTennisBookingV3.Helpers;
 using CourtTennisBookingV3.Models;
 using Firebase.Auth;
 using Firebase.Storage;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -22,6 +23,8 @@ namespace CourtTennisBookingV3.Controllers
 {
     [Route("api/v1.0/[controller]")]
     [ApiController]
+    //[Authorize]
+
     public class UserController : ControllerBase
     {
         private readonly TennisBooking_v1Context _context;
@@ -55,35 +58,106 @@ namespace CourtTennisBookingV3.Controllers
                     Message = "Invalid username/password. Please try again."
                 });
             }
-            //generate token (cấp token)
-            //var claims = new Claim[]
-            //{
-            //    new Claim(ClaimTypes.Name, acc.Email),
-            //    new Claim(ClaimTypes.Role, "User")
-            //};
-            //var tokenHandler = new JwtSecurityTokenHandler();
-            //var key = Encoding.ASCII.GetBytes(_appSettings.Secret);
-            //var tokenDescriptor = new SecurityTokenDescriptor
-            //{
-            //    Subject = new ClaimsIdentity(claims),
-            //    Expires = DateTime.UtcNow.AddDays(1),
-            //    SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
-            //};
-            //var token = tokenHandler.CreateToken(tokenDescriptor);
+            //generate token(cấp token)
+            var claims = new Claim[]
+            {
+                new Claim(ClaimTypes.Name, acc.Email),
+                new Claim(ClaimTypes.Role, "OC")
+            };
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var key = Encoding.ASCII.GetBytes(_appSettings.Secret);
+            var tokenDescriptor = new SecurityTokenDescriptor
+            {
+                Subject = new ClaimsIdentity(claims),
+                Expires = DateTime.UtcNow.AddDays(1),
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+            };
+            var token = tokenHandler.CreateToken(tokenDescriptor);
 
             return Ok(new ApiRespone
             {
                 Success = true,
                 Message = "Authenticate Success!",
-                //Data = new
-                //{
-                //    Token = tokenHandler.WriteToken(token)
-                //}
-                Data = GenerateToken(acc)
+                Data = new
+                {
+                    Token = tokenHandler.WriteToken(token)
+                }
+                //Data = GenerateToken(acc)
             });
         }
 
 
+
+
+
+        /// <summary>
+        /// Login user
+        /// </summary>
+        [HttpPost("LoginUser")]
+        public async Task<ActionResult<IEnumerable<Account>>> Login1(LoginVM login)
+        {
+            var acc = _context.Accounts.SingleOrDefault(acc => acc.Email == login.UserName && acc.Password == login.Password );
+
+            if (acc == null)
+            {
+                return Ok(new ApiRespone
+                {
+                    Success = false,
+                    Message = "Invalid username/password. Please try again."
+                });
+            }
+
+            //var acc1 = _context.Accounts.Find(acc.Email);
+            var result = await (from acc2 in _context.Accounts
+                                where acc2.Email == acc.Email
+                                select new
+                                {
+                                    Email = acc2.Email,
+                                    
+                                    roleId = acc2.RoleId
+                                }
+                                ).ToListAsync();
+
+
+            return Ok(new { StatusCode = 200, message = "Login successful!", data = result });
+        } 
+        
+        
+        
+        /// <summary>
+        /// Login by account with role CU
+        /// </summary>
+        [HttpPost("LoginWithCu")]
+        public async Task<ActionResult<IEnumerable<Account>>> Login2(LoginVM login)
+        {
+            var acc = _context.Accounts.SingleOrDefault(acc => acc.Email == login.UserName && acc.Password == login.Password && acc.RoleId == "CU");
+
+            if (acc == null)
+            {
+                return Ok(new ApiRespone
+                {
+                    Success = false,
+                    Message = "Invalid username/password. Please try again."
+                });
+            }
+
+            //var acc1 = _context.Accounts.Find(acc.Email);
+            var result = await (from acc2 in _context.Customers
+                                where acc2.Email == acc.Email
+                                select new
+                                {
+                                    Email = acc2.Email,
+                                    FullName = acc2.FullName,
+                                    Dob = acc2.Dob,
+                                    Gender = acc2.Gender,
+                                    Phone = acc2.Phone,
+                                    Address = acc2.Address
+                                }
+                                ).ToListAsync();
+
+
+            return Ok(new { StatusCode = 200, message = "Login successful!", data = result });
+        }
         private TokenModel GenerateToken(Account acc)
         {
             var jwtTokenHandler = new JwtSecurityTokenHandler();
@@ -225,7 +299,7 @@ namespace CourtTennisBookingV3.Controllers
             }
             catch (Exception e)
             {
-                return StatusCode(409, new { StatusCode = 409, message = "Email chưa được đăng kí"});
+                return StatusCode(409, new { StatusCode = 409, message = "Email chưa được đăng kí" });
             }
         }
 

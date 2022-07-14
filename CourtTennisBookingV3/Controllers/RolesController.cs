@@ -9,11 +9,14 @@ using CourtTennisBookingV3.Models;
 using CourtTennisBookingV3.Service;
 using System.Text.RegularExpressions;
 using CourtTennisBookingV3.General;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CourtTennisBookingV3.Controllers
 {
     [Route("api/v1.0/[controller]")]
     [ApiController]
+    //[Authorize]
+
     public class RolesController : ControllerBase
     {
         private readonly TennisBooking_v1Context _context;

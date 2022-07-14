@@ -8,11 +8,14 @@ using Microsoft.EntityFrameworkCore;
 using CourtTennisBookingV3.Models;
 using CourtTennisBookingV3.Service;
 using System.Text.RegularExpressions;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CourtTennisBookingV3.Controllers
 {
+    //[Authorize(Roles = "OC")]
     [Route("api/v1.0/[controller]")]
     [ApiController]
+
     public class TennisCourtsController : ControllerBase
     {
         private readonly TennisBooking_v1Context _context;
@@ -22,6 +25,9 @@ namespace CourtTennisBookingV3.Controllers
             _context = context;
             _tenisCourtsRespository = tenisCourtsRespository;
         }
+
+
+
         /// <summary>
         /// Get list TennisCourts                                                                                                                           
         /// </summary>
@@ -32,17 +38,17 @@ namespace CourtTennisBookingV3.Controllers
             try
             {
                 var result = _tenisCourtsRespository.GetAlḷ(search, sortby, page);
-                var account = await (from c in _context.TennisCourts
-                                     select new
-                                     {
-                                         c.Id,
-                                         c.Name,
-                                         c.Address,
-                                         c.Price,
-                                         c.OwnerId,
-                                         c.Group
-                                     }
-                                    ).ToListAsync();
+                //var account = await (from c in _context.TennisCourts
+                //                     select new
+                //                     {
+                //                         c.Id,
+                //                         c.Name,
+                //                         c.Address,
+                //                         c.Price,
+                //                         c.OwnerId,
+                //                         c.Group
+                //                     }
+                //                    ).ToListAsync();
 
                 return Ok(new { StatusCode = 200, message = "The request was successfully completed", data = result });
 
@@ -52,6 +58,75 @@ namespace CourtTennisBookingV3.Controllers
             {
 
                 return BadRequest("We  can't not  get account");
+            }
+        }
+
+        /// <summary>
+        /// Get list email ownerid                                                                                                                       
+        /// </summary>
+        // GET: api/TennisCourts
+        [HttpGet("SearchByOwnerId")]
+        public async Task<ActionResult<IEnumerable<TennisCourt>>> GetlistByOwnerId(string search)
+        {
+            try
+            {
+                var account = await (from c in _context.TennisCourts
+                                     where c.OwnerId.Contains(search)
+                                     select new
+                                     {
+                                         c.Id,
+                                         c.Name,
+                                         c.Address,
+                                         c.Price,
+                                         c.OwnerId,
+                                         c.Group,
+                                         c.Rating,
+                                         c.Image
+
+                                     }
+                                    ).ToListAsync();
+
+                return Ok(new { StatusCode = 200, message = "The request was successfully completed", data = account });
+            }
+            catch (Exception e)
+            {
+                return StatusCode(409, new { StatusCode = 409, Message = e.Message });
+            }
+        }
+
+
+
+        /// <summary>
+        /// SearchAddress                                                                                                                           
+        /// </summary>
+        [HttpGet("SearchAddress")]
+        public async Task<ActionResult<IEnumerable<TennisCourt>>> SearchAddress(string search)
+        {
+            try
+            {
+                var allAddress = await (from address in _context.TennisCourts
+                                        where address.Address.Contains(search)
+                                        select new
+                                        {
+                                            address.Id,
+                                            address.Address,
+                                            address.Name,
+                                            address.OwnerId,
+                                            address.Owner,
+                                            address.Group,
+                                            address.Price,
+                                            address.Image
+                                        }
+
+                                        ).ToListAsync();
+                return Ok(new { StatusCode = 200, message = "The request was successfully completed", data = allAddress });
+
+
+            }
+            catch (Exception e)
+            {
+
+                return StatusCode(409, new { StatusCode = 409, Message = e.Message });
             }
         }
 
@@ -106,29 +181,49 @@ namespace CourtTennisBookingV3.Controllers
         /// Create TennisCourts                                                                                                                           
         /// </summary>
         // POST: api/TennisCourts
-    
+
         [HttpPost]
         public async Task<ActionResult<TennisCourt>> PostTennisCourt(TennisCourt tennisCourt)
         {
-            _context.TennisCourts.Add(tennisCourt);
             try
             {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateException)
-            {
-                if (TennisCourtExists(tennisCourt.Id))
+
+                var hasLowerChar = new Regex(@"[a-z]+");
+                var hasUpperChar = new Regex(@"[A-Z]+");
+                var hasNumber = new Regex(@"[0-9]+");
+                var hasSymbols = new Regex(@"[!@#$`%^&*()_+=\[{\]};:<>|./?,-]");
+                var isPhone = new Regex(@"(0[2|1|3|5|7|8|9])+([0-9]{8})\b");
+                var regexName = new Regex("^[0-9a-zA-Z ]*$");
+                var tennisCourt1 = new TennisCourt();
+                tennisCourt1.Id = tennisCourt.Id;
+                tennisCourt1.Address = tennisCourt.Address;
+                tennisCourt1.Price = tennisCourt.Price;
+                tennisCourt1.OwnerId = tennisCourt.OwnerId;
+                tennisCourt1.Group = tennisCourt.Group;
+                tennisCourt1.Rating = tennisCourt.Rating;
+                tennisCourt1.Image = tennisCourt.Image;
+
+                if (!regexName.IsMatch(tennisCourt1.Name = tennisCourt.Name))
                 {
-                    return Conflict();
+                    return BadRequest(new { StatusCode = 400, Message = "invalidName" });
                 }
                 else
                 {
-                    throw;
+                    _context.TennisCourts.Add(tennisCourt1);
+                    await _context.SaveChangesAsync();
+                    return Ok(new { status = 201, message = "Create TennisCourts successfull!" });
                 }
             }
+            catch (Exception)
+            {
 
-            return CreatedAtAction("GetTennisCourt", new { id = tennisCourt.Id }, tennisCourt);
+                throw;
+            }
+
+
         }
+
+
 
         /// <summary>
         /// Delete a TennisCourts                                                                                                                           

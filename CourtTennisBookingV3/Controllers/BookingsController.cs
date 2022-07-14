@@ -8,11 +8,14 @@ using Microsoft.EntityFrameworkCore;
 using CourtTennisBookingV3.Models;
 using CourtTennisBookingV3.Service;
 using System.Text.RegularExpressions;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CourtTennisBookingV3.Controllers
 {
     [Route("api/v1.0/[controller]")]
     [ApiController]
+    //[Authorize]
+
     public class BookingsController : ControllerBase
     {
         private readonly TennisBooking_v1Context _context;
@@ -36,21 +39,6 @@ namespace CourtTennisBookingV3.Controllers
             try
             {
                 var result = _bookingsRespository.GetAlḷ(search, sortby, page);
-                //var booking = await (from book in _context.Bookings
-                //                     select new
-                //                     {
-                //                         book.Id,
-                //                         book.CusName,
-                //                         book.BookingDate,
-                //                         book.CourtId,
-                //                         book.Price,
-                //                         book.Slot,
-                //                         book.CusId,
-                //                         book.CreateDate,
-                //                         book.TimeStart,
-                //                         book.TimeEnd,
-                //                     }
-                //                    ).ToListAsync();
 
                 return Ok(new { StatusCode = 200, message = "The request was successfully completed", data = result });
 
@@ -60,9 +48,91 @@ namespace CourtTennisBookingV3.Controllers
             {
                 return StatusCode(409, new { StatusCode = 409, message = e.Message });
             }
+
+
         }
 
-        // PUT: api/Bookings/5
+
+
+
+
+
+
+        /// <summary>
+        /// Search By CourId                                                                                                                      
+        /// </summary>
+        [HttpGet("SearchByCourId")]
+        public async Task<ActionResult<IEnumerable<Booking>>> GetBookingsByCourId(string search)
+        {
+            try
+            {
+
+                var account = await (from c in _context.Bookings
+                                     where c.CourtId.Contains(search)
+                                     select new
+                                     {
+                                         c.Id,
+                                         c.CusId,
+                                         c.CreateDate,
+                                         c.TimeStart,
+                                         c.TimeEnd,
+                                         c.Price,
+                                         c.CourtId,
+                                         c.BookingDate,
+                                         c.Status,
+                                         c.CusName
+                                     }
+                                    ).ToListAsync();
+
+                return Ok(new { StatusCode = 200, message = "The request was successfully completed", data = account });
+
+
+            }
+            catch (Exception e)
+            {
+                return StatusCode(409, new { StatusCode = 409, message = e.Message });
+            }
+        }
+
+
+        /// <summary>
+        /// Get all by OwnerId                                                                                                          
+        /// </summary>
+        [HttpGet("SearchByCour")]
+        public async Task<ActionResult<IEnumerable<Booking>>> GetBookingsByCourId2(string search)
+        {
+            try
+            {
+
+                var account = await (from c in _context.Bookings
+                                     join a in _context.TennisCourts on c.CourtId equals a.Id
+                                     where a.OwnerId.Contains(search)
+                                     select new
+                                     {
+                                         c.Id,
+                                         c.CusId,
+                                         c.CreateDate,
+                                         c.TimeStart,
+                                         c.TimeEnd,
+                                         c.Price,
+                                         c.CourtId,
+                                         c.BookingDate,
+                                         c.Status,
+                                         c.CusName,
+                                         a.OwnerId
+                                     }
+                                    ).ToListAsync();
+
+                return Ok(new { StatusCode = 200, message = "The request was successfully completed", data = account });
+
+
+            }
+            catch (Exception e)
+            {
+                return StatusCode(409, new { StatusCode = 409, message = e.Message });
+            }
+        }
+
         /// <summary>
         /// Edit a booking                                                                                                                           
         /// </summary>
@@ -79,8 +149,6 @@ namespace CourtTennisBookingV3.Controllers
 
                 var booking1 = _context.Bookings.Find(id);
 
-
-
                 booking1.CusId = booking.CusId;
                 booking1.CreateDate = booking.CreateDate;
                 booking1.TimeStart = booking.TimeStart;
@@ -90,8 +158,6 @@ namespace CourtTennisBookingV3.Controllers
                 booking1.BookingDate = booking.BookingDate;
                 booking1.Status = booking.Status;
                 booking1.CusName = booking.CusName;
-
-
 
                 var checkTennisCourtID = _context.TennisCourts.FirstOrDefault(t => t.Id == booking1.CourtId);
 
@@ -140,7 +206,7 @@ namespace CourtTennisBookingV3.Controllers
                 var booking1 = new Booking();
 
                 // truyền dư liệu vào
-
+                booking1.Id = booking.Id;
                 booking1.CusId = booking.CusId;
                 booking1.CreateDate = booking.CreateDate;
                 booking1.TimeStart = booking.TimeStart;
@@ -151,26 +217,38 @@ namespace CourtTennisBookingV3.Controllers
                 booking1.Status = booking.Status;
                 booking1.CusName = booking.CusName;
 
-
+                //check trung thoi gian / ngày
+                var DuplicateTimeStart = _context.Bookings.FirstOrDefault(t => t.TimeStart == booking1.TimeStart);
+                var DuplicateBookingDay = _context.Bookings.FirstOrDefault(t => t.BookingDate == booking1.BookingDate);
                 //check tồn tại
                 var checkTennisCourtID = _context.TennisCourts.FirstOrDefault(t => t.Id == booking1.CourtId);
+                if (DuplicateBookingDay != null)
+                {
+                    if (DuplicateTimeStart != null)
+                    {
+                        return BadRequest(new { StatusCode = 404, Message = "This time booking is alredy exist!" });
+                    }
 
+                }
                 if (checkTennisCourtID == null)
                 {
                     return BadRequest(new { StatusCode = 404, Message = "CourtID is not found!" });
                 }
                 var CustomerID = _context.Customers.FirstOrDefault(t => t.Email == booking1.CusId);
-
                 if (CustomerID == null)
                 {
                     return BadRequest(new { StatusCode = 404, Message = "CustomerID is not found!" });
                 }
+
                 else
                 {
-                    _context.Bookings.Add(booking);
+                    _context.Bookings.Add(booking1);
                     await _context.SaveChangesAsync();
                     return Ok(new { status = 201, message = "Create booking successfull!" });
                 }
+
+
+
             }
             catch (Exception e)
             {
@@ -201,5 +279,6 @@ namespace CourtTennisBookingV3.Controllers
         {
             return _context.Bookings.Any(e => e.Id == id);
         }
+
     }
 }

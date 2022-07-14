@@ -10,11 +10,14 @@ using CourtTennisBookingV3.Service;
 
 
 using System.Text.RegularExpressions;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CourtTennisBookingV3.Controllers
 {
     [Route("api/v1.0/[controller]")]
     [ApiController]
+    //[Authorize]
+
     public class AccountsController : ControllerBase
     {
         private readonly TennisBooking_v1Context _context;
@@ -225,7 +228,7 @@ namespace CourtTennisBookingV3.Controllers
         /// <summary>
         /// Delete an  account                                                                                                                                
         /// </summary>
-        [HttpDelete("{id}")]
+        [HttpDelete("{email}")]
         public async Task<IActionResult> DeleteAccount(string id)
         {
             var account = await _context.Accounts.FindAsync(id);
