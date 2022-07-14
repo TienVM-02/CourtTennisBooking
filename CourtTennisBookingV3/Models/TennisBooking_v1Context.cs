@@ -70,13 +70,22 @@ namespace CourtTennisBookingV3.Models
                     .HasMaxLength(10)
                     .IsUnicode(false);
 
-                entity.Property(e => e.BookingDate).HasColumnType("date");
+
+                entity.Property(e => e.BookingDate)
+                    .HasMaxLength(20)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.CreateDate)
+                    .HasMaxLength(20)
+                    .IsUnicode(false);
+
+             
 
                 entity.Property(e => e.CourtId)
                     .HasMaxLength(20)
                     .IsUnicode(false);
 
-                entity.Property(e => e.CreateDate).HasColumnType("datetime");
+
 
                 entity.Property(e => e.CusId)
                     .HasMaxLength(200)

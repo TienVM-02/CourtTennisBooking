@@ -34,6 +34,16 @@
             Get list booking                                                                                                                           
             </summary>
         </member>
+        <member name="M:CourtTennisBookingV3.Controllers.BookingsController.GetBookingsByCourId(System.String)">
+            <summary>
+            Search By CourId                                                                                                                      
+            </summary>
+        </member>
+        <member name="M:CourtTennisBookingV3.Controllers.BookingsController.GetBookingsByCourId2(System.String)">
+            <summary>
+            Get all by OwnerId                                                                                                          
+            </summary>
+        </member>
         <member name="M:CourtTennisBookingV3.Controllers.BookingsController.PutBooking(System.String,CourtTennisBookingV3.Models.Booking)">
             <summary>
             Edit a booking                                                                                                                           
@@ -109,6 +119,16 @@
             Get list TennisCourts                                                                                                                           
             </summary>
         </member>
+        <member name="M:CourtTennisBookingV3.Controllers.TennisCourtsController.GetlistByOwnerId(System.String)">
+            <summary>
+            Get list email ownerid                                                                                                                       
+            </summary>
+        </member>
+        <member name="M:CourtTennisBookingV3.Controllers.TennisCourtsController.SearchAddress(System.String)">
+            <summary>
+            SearchAddress                                                                                                                           
+            </summary>
+        </member>
         <member name="M:CourtTennisBookingV3.Controllers.TennisCourtsController.PutTennisCourt(System.String,CourtTennisBookingV3.Models.TennisCourt)">
             <summary>
             Edit a TennisCourts                                                                                                                           
@@ -127,6 +147,16 @@
         <member name="M:CourtTennisBookingV3.Controllers.UserController.Login(CourtTennisBookingV3.Models.LoginVM)">
             <summary>
             Generate Token
+            </summary>
+        </member>
+        <member name="M:CourtTennisBookingV3.Controllers.UserController.Login1(CourtTennisBookingV3.Models.LoginVM)">
+            <summary>
+            Login user
+            </summary>
+        </member>
+        <member name="M:CourtTennisBookingV3.Controllers.UserController.Login2(CourtTennisBookingV3.Models.LoginVM)">
+            <summary>
+            Login by account with role CU
             </summary>
         </member>
         <member name="M:CourtTennisBookingV3.Controllers.UserController.PostFireBase(Microsoft.AspNetCore.Http.IFormFile)">

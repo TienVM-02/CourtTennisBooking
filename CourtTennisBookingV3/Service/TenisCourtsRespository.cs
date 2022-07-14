@@ -51,6 +51,7 @@ namespace CourtTennisBookingV3.Service
                 Group = c.Group,
                 Rating = c.Rating,
                 Image = c.Image,
+                Owner = c.Owner,
 
             });
 

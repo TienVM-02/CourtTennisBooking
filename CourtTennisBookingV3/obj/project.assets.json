@@ -10108,19 +10108,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\ipuil\\.nuget\\packages\\": {}
+    "C:\\Users\\vuanh\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\ipuil\\OneDrive\\Máy tính\\1\\CourtTennisBookingV3\\CourtTennisBookingV3.csproj",
+      "projectUniqueName": "D:\\SWD391 BinhNN\\CourtTennisBooking\\CourtTennisBookingV3\\CourtTennisBookingV3.csproj",
       "projectName": "CourtTennisBookingV3",
-      "projectPath": "C:\\Users\\ipuil\\OneDrive\\Máy tính\\1\\CourtTennisBookingV3\\CourtTennisBookingV3.csproj",
-      "packagesPath": "C:\\Users\\ipuil\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\ipuil\\OneDrive\\Máy tính\\1\\CourtTennisBookingV3\\obj\\",
+      "projectPath": "D:\\SWD391 BinhNN\\CourtTennisBooking\\CourtTennisBookingV3\\CourtTennisBookingV3.csproj",
+      "packagesPath": "C:\\Users\\vuanh\\.nuget\\packages\\",
+      "outputPath": "D:\\SWD391 BinhNN\\CourtTennisBooking\\CourtTennisBookingV3\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\ipuil\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\vuanh\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [

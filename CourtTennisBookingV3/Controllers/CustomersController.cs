@@ -8,11 +8,14 @@ using Microsoft.EntityFrameworkCore;
 using CourtTennisBookingV3.Models;
 using CourtTennisBookingV3.Service;
 using System.Text.RegularExpressions;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CourtTennisBookingV3.Controllers
 {
     [Route("api/v1.0/[controller]")]
     [ApiController]
+    //[Authorize]
+
     public class CustomersController : ControllerBase
     {
         private readonly TennisBooking_v1Context _context;
@@ -61,8 +64,7 @@ namespace CourtTennisBookingV3.Controllers
         /// Edit a Customers                                                                                                                           
         /// </summary>
         // PUT: api/Customers/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
+        [HttpPut("{email}")]
         public async Task<IActionResult> PutCustomer(string email, Customer customer)
         {
             try
@@ -88,7 +90,7 @@ namespace CourtTennisBookingV3.Controllers
                 else
                 {
                     await _context.SaveChangesAsync();
-                    return Ok(new { StatusCode = 200, Message = "Update Password Successfully!" });
+                    return Ok(new { StatusCode = 200, Message = "Update Customer Successfully!" });
                 }
             }
             catch (Exception e)
@@ -138,7 +140,7 @@ namespace CourtTennisBookingV3.Controllers
                 {
                     _context.Customers.Add(customer);
                     await _context.SaveChangesAsync();
-                    return Ok(new { status = 201, message = "Create courtOwner successfull!" });
+                    return Ok(new { status = 201, message = "Create Customer successfull!" });
                 }
             }
             catch (Exception e)
@@ -151,7 +153,7 @@ namespace CourtTennisBookingV3.Controllers
         /// Delete a Customers                                                                                                                           
         /// </summary>
         // DELETE: api/Customers/5
-        [HttpDelete("{id}")]
+        [HttpDelete("{email}")]
         public async Task<IActionResult> DeleteCustomer(string id)
         {
             var customer = await _context.Customers.FindAsync(id);

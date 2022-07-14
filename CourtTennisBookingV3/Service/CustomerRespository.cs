@@ -47,6 +47,7 @@ namespace CourtTennisBookingV3.Service
                 FullName = cus.FullName,
                 Dob = cus.Dob,
                 Gender = cus.Gender,
+                Phone = cus.Phone,
                 Address = cus.Address
             });
 
