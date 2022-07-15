@@ -1,11 +1,15 @@
-import Router from "./routes/routes";
+import AppRouter from "./routes/routes";
 import "./App.css";
 import { ThemeProvider } from "@material-ui/core";
+// import {BrowserRouter as Router } from "react-router-dom";
 
 function App() {
   return (
     <ThemeProvider>
-      <Router/>
+      {/* <Router> */}
+        <AppRouter />
+      {/* </Router> */}
+
     </ThemeProvider>
   );
 }

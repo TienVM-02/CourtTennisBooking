@@ -17,13 +17,13 @@ import BookingList from "../pages/owner/booking/booking";
 
 // ----------------------------------------------------------------------
 
-export default function Router() {
+export default function AppRouter() {
   return useRoutes([
     {
       path: "/",
-      //   element: <Login />,
+        // element: <Login />,
       children: [
-        { path: "", element: <Login /> },
+        { path: "login", element: <Login /> },
         { path: "loginRoleAD", element: <Login /> },
         { path: "loginRoleCO", element: <LoginCO /> },
         { path: "owner", element: <OwnerHome /> },
